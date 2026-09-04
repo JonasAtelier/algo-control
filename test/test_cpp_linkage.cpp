@@ -6,7 +6,7 @@
 
 int main()
 {
-	imp s = { 0 };
+	imp s = {};
 	double f = 10.0;
 
 	s.n = 1;
