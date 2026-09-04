@@ -1,0 +1,5 @@
+*.o
+*.a
+balance
+test_lqr
+test_cpp_linkage
