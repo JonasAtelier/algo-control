@@ -1,2 +1,6 @@
 build/
 *.o
+*.a
+test_foc
+test_cpp_linkage
+align
