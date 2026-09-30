@@ -15,7 +15,7 @@ host and portable off the ESP32.
 The piece that joins hardware I already have into an actual drive:
 
 ```
-esp-as5047p-encoder  ─ angle ─┐
+esp-encoder/AS5047P  ─ angle ─┐
                               ├─→  foc  ─→ esp-drv8323-gatedriver ─→ motor
 phase currents  ──────────────┘   (upid runs the two current loops)
 ```
@@ -248,7 +248,7 @@ loses magnitude and keeps direction: less torque, still the right torque.
 
 ## Why separate
 
-`esp-drv8323-gatedriver` configures gates. `esp-as5047p-encoder` reports an
+`esp-drv8323-gatedriver` configures gates. `esp-encoder` reports an
 angle. Neither knows what a motor is, and neither should. The maths between
 them is not ESP-IDF's business either, so it lives here.
 
