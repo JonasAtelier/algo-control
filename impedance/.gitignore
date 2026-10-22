@@ -1,0 +1,5 @@
+*.o
+*.a
+push
+test_imp
+test_cpp_linkage
