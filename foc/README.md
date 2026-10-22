@@ -51,7 +51,8 @@ make check    # the tests
 make run      # find theta_offset on a simulated motor, then get it wrong
 ```
 
-`make` expects a checkout of `upid` beside this one. Point it elsewhere with
+`make` expects a checkout of `upid` beside the algo-control checkout; `make
+check` in the repo root fetches one for you. Point it elsewhere with
 `make UPID_DIR=/path/to/upid`.
 
 ## What it does

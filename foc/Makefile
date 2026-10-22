@@ -7,8 +7,9 @@ LDLIBS    = -lm
 
 # upid ships as plain C source with no build system, so there is nothing to
 # link against - its one .c file is compiled straight into whatever needs it.
-# Clone it next to this repo, or say: make UPID_DIR=/path/to/upid
-UPID_DIR ?= ../upid
+# Clone it next to the algo-control checkout (make check in the repo root
+# fetches it), or say: make UPID_DIR=/path/to/upid
+UPID_DIR ?= ../../upid
 UPID_SRC  = $(UPID_DIR)/src/upid.c
 
 CPPFLAGS += -Iinclude -I$(UPID_DIR)/include
@@ -23,7 +24,7 @@ all: upid-check $(LIB) test_foc align
 upid-check:
 	@test -f $(UPID_SRC) || { \
 	  echo "upid not found at $(UPID_DIR)"; \
-	  echo "clone https://github.com/JonasAtelier/upid beside this repo,"; \
+	  echo "clone https://github.com/JonasAtelier/upid beside algo-control,"; \
 	  echo "or build with: make UPID_DIR=/path/to/upid"; \
 	  exit 1; }
 
