@@ -45,6 +45,10 @@ make check    # run the tests
 make run      # push a simulated axis and watch it settle
 ```
 
+To use it in your own project, copy `include/imp.h` and `src/imp.c`, link the
+CMake target `algo::impedance`, or use this folder as an ESP-IDF component. See
+[Use one library](../README.md#use-one-library).
+
 ## A complete example
 
 One axis. A force arrives from your sensor; you add the resulting offset to

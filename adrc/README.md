@@ -31,6 +31,10 @@ make check    # run the tests
 make run      # run the DC motor example
 ```
 
+To use it in your own project, copy `include/adrc.h` and `src/adrc.c`, link the
+CMake target `algo::adrc`, or use this folder as an ESP-IDF component. See [Use
+one library](../README.md#use-one-library).
+
 The example runs a speed loop at 1500 rpm and drops a load on it at t = 1 s:
 
 ```

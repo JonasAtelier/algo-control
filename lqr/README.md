@@ -49,6 +49,10 @@ make check    # run the tests
 make run      # design a gain for a balancing robot and watch it recover
 ```
 
+To use it in your own project, copy `include/lqr.h` and `src/lqr.c`, link the
+CMake target `algo::lqr`, or use this folder as an ESP-IDF component. See [Use
+one library](../README.md#use-one-library).
+
 ## Describing your system
 
 Your machine becomes two matrices. If your states are `x` (a column of numbers

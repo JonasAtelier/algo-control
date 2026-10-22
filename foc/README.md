@@ -35,6 +35,9 @@ Copy `include/foc.h` and `src/foc.c` into your project and build them with your
 other sources. For the current loops, also take `src/foc_loop.c` and both files
 of [upid](https://github.com/JonasAtelier/upid). That is the whole install.
 
+With CMake, link the target `algo::foc`; it fetches upid for you. See [Use one
+library](../README.md#use-one-library).
+
 - **ESP-IDF** — drop the files into a component and list them in
   `idf_component_register(SRCS ...)`. Take `dt_s` from `esp_timer_get_time()`.
 - **Arduino** — the files beside your `.ino`, or in
