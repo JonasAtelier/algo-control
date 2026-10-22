@@ -1,0 +1,5 @@
+*.o
+*.a
+motor
+test_adrc
+test_cpp_linkage
