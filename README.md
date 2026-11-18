@@ -13,6 +13,10 @@ Control motor speed, balance a robot or make a joint yield to contact. Each cont
 | [impedance](impedance/) | Make a robot yield like a spring when it touches something. | [push](impedance/examples/push.c) · [API](impedance/include/imp.h) |
 | [foc](foc/) | Calculate currents and voltages for field-oriented control of a three-phase motor. | [align](foc/examples/align.c) · [API](foc/include/foc.h) |
 
+[![A spring and damper model lets a joint yield when it meets a surface.](impedance/assets/impedance.svg)](impedance/)
+
+*[Impedance control example and API](impedance/).*
+
 ## Try the example
 
 From this repository’s root, use Make and a C99 compiler. No robot hardware is needed.
