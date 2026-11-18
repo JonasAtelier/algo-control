@@ -1,73 +1,39 @@
 # algo-control
 
-<p align="center">
-  <img alt="platform: portable C99" src="https://img.shields.io/badge/platform-portable%20C99-70e1b2?style=flat-square&labelColor=0d2238">
-  <img alt="language: C" src="https://img.shields.io/badge/language-C-70e1b2?style=flat-square&labelColor=0d2238">
-  <img alt="license: MIT" src="https://img.shields.io/badge/license-MIT-f2bd68?style=flat-square&labelColor=0d2238">
-</p>
+Control motor speed, balance a robot or make a joint yield to contact. Each controller is written in portable C99.
 
-Control for robots — four small controllers in portable C99, each one header
-and one `.c` file, no heap. A setpoint and a measurement go in, an output
-comes out.
+## Try the example
 
-## Libraries
+From this repository’s root, use Make and a C99 compiler. No robot hardware is needed.
 
-| Library | What it does | Pick it when |
-|---|---|---|
-| [adrc](adrc) | Estimates whatever is fighting your plant and cancels it | PID needs retuning every time the load changes |
-| [lqr](lqr) | Optimal state-feedback gains for small systems | you have a model and several coupled states — a balancing robot |
-| [impedance](impedance) | Impedance and admittance control | the robot touches things and has to give way like a spring |
-| [foc](foc) | Field-oriented control maths for three-phase motors | you drive a BLDC/PMSM and want torque, not just speed; needs [upid](https://github.com/JonasAtelier/upid) |
+```sh
+make -C adrc run
+```
 
-## Use one library
+Watch a simulated motor regulate its speed around 1,500 rpm as the load changes. [Example source](adrc/examples/motor.c)
 
-Every library stands on its own: no shared headers, nothing from one library
-needed by another. Take the one you need and leave the rest. Three ways in.
+## Choose a library
 
-**Copy the files.** `adrc/include/adrc.h` and `adrc/src/adrc.c` into your
-project, built with your own sources. That is the whole install.
+| Library | What it does |
+| --- | --- |
+| [adrc](adrc/) | Estimate the effect of an unexpected load and compensate for it. |
+| [lqr](lqr/) | Compute feedback gains from a model with several interacting variables. |
+| [impedance](impedance/) | Make a robot yield like a spring when it touches something. |
+| [foc](foc/) | Calculate currents and voltages for field-oriented control of a three-phase motor. |
 
-**CMake.** Every library is its own target, `algo::<folder>`. Add just the
-folder you need:
+## Add it to your project
+
+For plain C, compile the source files in the library’s `src/` directory and add its `include/` directory to your compiler’s include path. For a CMake application named `app`, place this checkout inside your project and use the following lines.
 
 ```cmake
 add_subdirectory(algo-control/adrc)
 target_link_libraries(app PRIVATE algo::adrc)
 ```
 
-or, without a copy in your tree:
+For ESP-IDF, add the library directory to `EXTRA_COMPONENT_DIRS` and its name to the consuming component’s `REQUIRES`. Select either the individual libraries or the entire repository to avoid duplicate symbols.
 
-```cmake
-include(FetchContent)
-FetchContent_Declare(algo_adrc
-    GIT_REPOSITORY https://github.com/JonasAtelier/algo-control.git
-    GIT_TAG        stable
-    SOURCE_SUBDIR  adrc)
-FetchContent_MakeAvailable(algo_adrc)
-target_link_libraries(app PRIVATE algo::adrc)
-```
-
-`add_subdirectory(algo-control)`, or FetchContent without `SOURCE_SUBDIR`, adds
-every library's target instead; link the ones you use. `foc` fetches upid when
-it is configured, so an adrc-only project should add `adrc` alone. Examples and
-tests only build when this repo is the top-level project.
-
-**ESP-IDF.** Point `EXTRA_COMPONENT_DIRS` at one library's folder. The
-component is named after the folder:
-
-```cmake
-# top-level CMakeLists.txt of your IDF project, before project()
-list(APPEND EXTRA_COMPONENT_DIRS path/to/algo-control/adrc)
-```
-
-then `REQUIRES adrc` in your component's `idf_component_register()`.
-
-Pointing it at the repo root instead gives you **one** component holding
-every library, named after the folder (`algo-control`): IDF does not look
-inside a folder that has its own `CMakeLists.txt`. Use one or the other,
-never both — every symbol would be defined twice.
-
-### foc and upid
+<details>
+<summary>Building FOC current loops with UPID</summary>
 
 `foc` is the one library here with an outside dependency: its current loops
 run on [upid](https://github.com/JonasAtelier/upid), a PID controller that
@@ -90,20 +56,21 @@ lives in its own repo. `foc.c` alone needs nothing; `foc_loop.c` needs upid.
 - **`make check`** — clones upid once into `.deps/`, at the same pinned
   commit. Use your own checkout with `make check UPID_DIR=/abs/path/to/upid`.
 
-## Build and test
+</details>
 
-```sh
-make check    # every library's own tests, stopping at the first failure
-make clean
+<details>
+<summary>Fetch just this library from GitHub with CMake</summary>
+
+```cmake
+include(FetchContent)
+FetchContent_Declare(algo_adrc
+    GIT_REPOSITORY https://github.com/JonasAtelier/algo-control.git
+    GIT_TAG        stable
+    SOURCE_SUBDIR  adrc)
+FetchContent_MakeAvailable(algo_adrc)
+target_link_libraries(app PRIVATE algo::adrc)
 ```
 
-Or with CMake and CTest. CTest runs the C tests only; the C++ linkage tests
-run under `make check`.
+</details>
 
-```sh
-cmake -B build && cmake --build build -j2 && ctest --test-dir build
-```
-
-## License
-
-MIT. See [LICENSE](LICENSE).
+Run `make check` from the repository root to test the libraries. [MIT license](LICENSE)
