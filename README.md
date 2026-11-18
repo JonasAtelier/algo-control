@@ -2,6 +2,17 @@
 
 Control motor speed, balance a robot or make a joint yield to contact. Each controller is written in portable C99.
 
+**Contents** · [Choose a library](#choose-a-library) · [Try the example](#try-the-example) · [Add it to your project](#add-it-to-your-project)
+
+## Choose a library
+
+| Library | What it does | Example and API |
+| --- | --- | --- |
+| [adrc](adrc/) | Estimate the effect of an unexpected load and compensate for it. | [motor](adrc/examples/motor.c) · [API](adrc/include/adrc.h) |
+| [lqr](lqr/) | Compute feedback gains from a model with several interacting variables. | [balance](lqr/examples/balance.c) · [API](lqr/include/lqr.h) |
+| [impedance](impedance/) | Make a robot yield like a spring when it touches something. | [push](impedance/examples/push.c) · [API](impedance/include/imp.h) |
+| [foc](foc/) | Calculate currents and voltages for field-oriented control of a three-phase motor. | [align](foc/examples/align.c) · [API](foc/include/foc.h) |
+
 ## Try the example
 
 From this repository’s root, use Make and a C99 compiler. No robot hardware is needed.
@@ -11,15 +22,6 @@ make -C adrc run
 ```
 
 Watch a simulated motor regulate its speed around 1,500 rpm as the load changes. [Example source](adrc/examples/motor.c)
-
-## Choose a library
-
-| Library | What it does |
-| --- | --- |
-| [adrc](adrc/) | Estimate the effect of an unexpected load and compensate for it. |
-| [lqr](lqr/) | Compute feedback gains from a model with several interacting variables. |
-| [impedance](impedance/) | Make a robot yield like a spring when it touches something. |
-| [foc](foc/) | Calculate currents and voltages for field-oriented control of a three-phase motor. |
 
 ## Add it to your project
 
@@ -74,3 +76,5 @@ target_link_libraries(app PRIVATE algo::adrc)
 </details>
 
 Run `make check` from the repository root to test the libraries. [MIT license](LICENSE)
+
+[Browse the workshop catalog · Portable C libraries](https://github.com/JonasAtelier/jonas-atelier-libraries#portable-c-libraries)
